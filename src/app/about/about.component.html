@@ -59,7 +59,7 @@
     <p>Display the details of the corporate leaders here</p>
   </div>
 -->
-    <div fxFlex>
+    <div fxFlex *ngIf="leaders">
       <h2>Corporate Leadership</h2>
       <div class="container" fxLayout="column" fxLayoutGap="10px">
         <mat-list fxFlex>
@@ -71,5 +71,8 @@
             </mat-list-item>
         </mat-list>
       </div>
+    </div>
+    <div [hidden]="leaders">
+      <mat-spinner></mat-spinner><h4>Loading . . . Please Wait</h4>
     </div>
 </div>
