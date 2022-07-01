@@ -38,6 +38,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatSliderModule} from '@angular/material/slider';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { baseURL } from './shared/baseurl';
+import { ProcessHTTPMsgService } from './services/process-httpmsg.service';
 
 
 @NgModule({
@@ -53,6 +56,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     LoginComponent
   ],
   imports: [
+    HttpClientModule,
     MatSliderModule,
     MatProgressSpinnerModule,
     MatSelectModule,
@@ -74,9 +78,11 @@ import { ReactiveFormsModule } from '@angular/forms';
     FlexLayoutModule
   ],
   providers: [
+    ProcessHTTPMsgService,
     LeaderService,
     DishService,
-    PromotionService
+    PromotionService,
+    {provide: 'BaseURL', useValue: baseURL}
   ],entryComponents: [
     LoginComponent
   ],
