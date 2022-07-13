@@ -22,7 +22,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     },
   animations: [
     flyInOut(),
-    visibility(),expand()
+    visibility(),
+    expand()
   ]
 })
 

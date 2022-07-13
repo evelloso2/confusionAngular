@@ -1,18 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
-import { expand, flyInOut } from '../animations/app.animation';
-
+import { expand } from '../animations/app.animation';
+import { FeedbackService } from '../feedback.service';
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
   host: {
-    '[@flyInOut]': 'true',
+    '[@expand]': 'true',
     'style': 'display: block;'
     },
-  animations: [flyInOut(),expand()],
+  animations: [expand()],
 })
 
 export class ContactComponent implements OnInit {
@@ -49,8 +49,11 @@ export class ContactComponent implements OnInit {
   feedbackForm: FormGroup = this.fb.group({});
   feedback: Feedback = new Feedback;
   contactType = ContactType;
-
-  constructor(private fb: FormBuilder) {
+  errMess!: string;
+  hideForm = false;
+  submiting = false;
+  constructor(private fb: FormBuilder,
+    private feedbackService:  FeedbackService) { 
     this.createForm();
   }
 
@@ -95,7 +98,28 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit() {
-    this.feedback = this.feedbackForm.value;
+    this.submiting=true;
+    
+      this.feedbackService.submitFeedback(this.feedbackForm.value)
+        .subscribe(
+              feed => {
+                this.feedback = feed; 
+                this.submiting = false; 
+                this.hideForm=true;
+                    setTimeout(() => {
+                      this.feedback = new Feedback;
+                      this.hideForm=false;
+                    }, 5000); 
+                },
+              errmess =>{
+                    setTimeout(() => {
+                      this.errMess = <any>errmess; 
+                      this.submiting = false; 
+                      this.hideForm=false;  
+                    }, 5000); 
+                }
+            ); 
+
     console.log(this.feedback);
     this.feedbackForm.reset({
       firstname: '',
@@ -109,4 +133,5 @@ export class ContactComponent implements OnInit {
     this.feedbackFormDirective.resetForm();
   }
 
+  
 }
